@@ -20,7 +20,7 @@ Trip.find({
       result.push({
         departure : data[i]['departure'],
         arrival : data[i]['arrival'],
-        data : moment(data[i]['date']).format('HH:mm'),
+        date : moment(data[i]['date']).format('HH:mm'),
         price : data[i]['price'],
       })
     };
