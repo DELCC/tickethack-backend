@@ -12,10 +12,19 @@ router.get(`/trips/:departure/:arrival/:date`,(req,res) =>{
 Trip.find({
   departure : req.params.departure, 
   arrival : req.params.arrival,
-  date : { $gte: moment(req.params.date).startOf('day').format(), $lte: moment(req.params.date).endOf('day').format() } })
+  date : { $gte: moment(req.params.date).startOf('day').format(), 
+    $lte: moment(req.params.date).endOf('day').format() } }).sort({_id : 1})
 .then(data => {
-    res.json({trips : data});
-});
-});
+    let result = [];
+    for (let i = 0; i<data.length; i++){
+      result.push({
+        departure : data[i]['departure'],
+        arrival : data[i]['arrival'],
+        data : moment(data[i]['date']).format('HH:mm'),
+        price : data[i]['price'],
+      })
+    };
+    res.json({trips : result});
+})});
 
 module.exports = router;
