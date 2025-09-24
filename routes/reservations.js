@@ -31,7 +31,7 @@ router.get("/isBooked", (req,res) => {
     .populate('trip_id')
     .then(data =>{
         let result = [];
-        for (let i = 0; i<data.length; i++){
+        for (let i = 0; i< data.length; i++){
             result.push({
              _id : data[i]["_id"],
             departure : data[i]['trip_id']['departure'],
@@ -39,8 +39,10 @@ router.get("/isBooked", (req,res) => {
             date : moment(data[i]['trip_id']['date']).format('HH:mm'),
             price : data[i]['trip_id']['price'],
     });
-        res.json({reservations : result});
-}})});
+        
+}
+res.json({reservations : result});
+})});
 
 
 //Valide la réservation
@@ -65,7 +67,9 @@ router.get("/isPurchased", (req,res) => {
             date : moment(data[i]['trip_id']['date']).format('HH:mm'),
             price : data[i]['trip_id']['price'],
     });
+        
+}
         res.json({purchased : result});
-}})});
+})});
 
 module.exports = router;
