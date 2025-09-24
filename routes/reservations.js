@@ -72,4 +72,19 @@ router.get("/isPurchased", (req,res) => {
         res.json({purchased : result});
 })});
 
+//Affiche la somme du panier
+
+router.get('/totalCart', (req,res)=>{
+    Reservation.find({isBooked : true})
+    .populate('trip_id')
+    .then(data => {
+        let total = 0;
+        for (let i = 0; i<data.length; i++){
+            total += data[i]['trip_id']['price'];
+        }
+        res.json({total : total});
+    });
+});
+
+
 module.exports = router;
