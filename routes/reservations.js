@@ -22,10 +22,11 @@ router.delete('/:id',(req,res)=>{
     res.json({result : "Booking Canceled !"});
 });
 
-//Valide la réservation
 
 
-router.get("/", (req,res) => {
+// Affiche les réservations
+
+router.get("/isBooked", (req,res) => {
     Reservation.find({isBooked : true})
     .populate('trip_id')
     .then(data =>{
@@ -41,5 +42,30 @@ router.get("/", (req,res) => {
         res.json({reservations : result});
 }})});
 
+
+//Valide la réservation
+router.put("/:id", (req,res)=>{
+    Reservation.updateOne({ _id: req.params.id }, { isBooked : false,
+        isPurchased : true,}).then(() => {
+        res.json({result : "Purchase Done !"});
+});
+});
+
+//Affiche les réservations payées
+router.get("/isPurchased", (req,res) => {
+    Reservation.find({isPurchased : true})
+    .populate('trip_id')
+    .then(data =>{
+        let result = [];
+        for (let i = 0; i<data.length; i++){
+            result.push({
+             _id : data[i]["_id"],
+            departure : data[i]['trip_id']['departure'],
+            arrival : data[i]['trip_id']['arrival'],
+            date : moment(data[i]['trip_id']['date']).format('HH:mm'),
+            price : data[i]['trip_id']['price'],
+    });
+        res.json({purchased : result});
+}})});
 
 module.exports = router;
