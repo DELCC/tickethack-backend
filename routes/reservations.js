@@ -19,7 +19,8 @@ router.post('/:id',(req,res)=>{
 router.delete('/:id',(req,res)=>{
     
     Reservation.deleteOne({_id :req.params.id})
-    .then(() => Reservation.find({isBooked : true}))
+    .then(() => Reservation.find({isBooked : true})
+    .populate('trip_id'))
     .then(data => {
         let result = [];
         for (let i = 0; i< data.length; i++){
