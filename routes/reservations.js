@@ -18,8 +18,22 @@ router.post('/:id',(req,res)=>{
 //Supprime la réservation de la page Cart et dans la collections reservations (id = _id de la collection reservations)
 router.delete('/:id',(req,res)=>{
     
-    Reservation.deleteOne({_id :ObjectID(req.params.id)});
-    res.json({result : "Booking Canceled !"});
+    Reservation.deleteOne({_id :ObjectID(req.params.id)})
+    .then(() => Reservation.find({isBooked : true}))
+    .then(data => {
+        let result = [];
+        for (let i = 0; i< data.length; i++){
+            result.push({
+             _id : data[i]["_id"],
+            departure : data[i]['trip_id']['departure'],
+            arrival : data[i]['trip_id']['arrival'],
+            date : moment(data[i]['trip_id']['date']).format('HH:mm'),
+            price : data[i]['trip_id']['price'],
+    });
+        
+}
+res.json({reservations : result});
+    })
 });
 
 
@@ -65,6 +79,7 @@ router.get("/isPurchased", (req,res) => {
             departure : data[i]['trip_id']['departure'],
             arrival : data[i]['trip_id']['arrival'],
             date : moment(data[i]['trip_id']['date']).format('HH:mm'),
+            fromNow :  moment(data[i]['trip_id']['date']).fromNow(),
             price : data[i]['trip_id']['price'],
     });
         
