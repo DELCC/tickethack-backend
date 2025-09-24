@@ -18,7 +18,7 @@ router.post('/:id',(req,res)=>{
 //Supprime la réservation de la page Cart et dans la collections reservations (id = _id de la collection reservations)
 router.delete('/:id',(req,res)=>{
     
-    Reservation.deleteOne({_id :ObjectID(req.params.id)})
+    Reservation.deleteOne({_id :req.params.id})
     .then(() => Reservation.find({isBooked : true}))
     .then(data => {
         let result = [];
