@@ -61,8 +61,9 @@ res.json({reservations : result});
 
 
 //Valide la réservation
-router.put("/:id", (req,res)=>{
-    Reservation.updateOne({ _id: req.params.id }, { isBooked : false,
+router.put("/", (req,res)=>{
+    Reservation.updateMany({ isBooked : true,
+        isPurchased : false, }, { isBooked : false,
         isPurchased : true,}).then(() => {
         res.json({result : "Purchase Done !"});
 });
