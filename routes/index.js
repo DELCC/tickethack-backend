@@ -18,6 +18,7 @@ Trip.find({
     let result = [];
     for (let i = 0; i<data.length; i++){
       result.push({
+        id : data[i]["_id"],
         departure : data[i]['departure'],
         arrival : data[i]['arrival'],
         date : moment(data[i]['date']).format('HH:mm'),
