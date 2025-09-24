@@ -25,7 +25,7 @@ Trip.find({
         price : data[i]['price'],
       })
     };
-    res.json({trips : result});
+    res.json({trips: result});
 })});
 
 module.exports = router;
